@@ -9,15 +9,17 @@
             CAB
  
 */
-#include <iostream>
+#include <bits/stdc++.h>
 using namespace std;
-
+set<string> ss;
 
 void findper(char input[100],char output[100],int i=0,int j=0){
     
     if(input[i]=='\0'){
         output[j]='\0';
-        cout<<output<<endl;
+        string s(output);
+        ss.insert(s);
+        // cout<<output<<endl;
         return;
     }
 
@@ -34,7 +36,11 @@ void findper(char input[100],char output[100],int i=0,int j=0){
 
 int main()
 {   char output[100];
-    char input[100]="ABC";
+    char input[100]="AABC";
     findper(input,output);
+    for(auto it=ss.begin();it!=ss.end();it++){
+        cout<<*it<<endl;
+    }
     return 0;
 }
+

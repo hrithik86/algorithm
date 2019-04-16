@@ -1,12 +1,16 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-void print(char s[10][10],int num[2],char output[50],int n,int i=0,int j=0){
+void print(char s[10][10],int num[],char output[50],int n,int i=0,int j=0){
     //base case
     if(i==n){
         output[j]='\0';
         cout<<output<<endl;
         return;
+    }
+    //skipping the numbers 1 and 0
+    if(num[i]==1||num[i]==0){
+        print(s,num,output,n,i+1,j);
     }
     for(int k=0;k<int(strlen(s[num[i]-1]));k++){
         output[j]=s[num[i]-1][k];
@@ -16,8 +20,8 @@ void print(char s[10][10],int num[2],char output[50],int n,int i=0,int j=0){
 }
 
 int main()
-{   char output[50];int n=2;
-    int num[2]={2,3};
+{   char output[50];int n=4;
+    int num[]={1,0,2,3};
     char s[10][10]={
         "",         //      1
         "ABC",      //      2

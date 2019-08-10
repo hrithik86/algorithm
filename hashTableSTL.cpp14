@@ -1,0 +1,70 @@
+//hash table implementation using STL
+#include <iostream>
+#include<unordered_map>
+#include<map>
+#include<cstring>
+using namespace std;
+#define mp make_pair<string,Fruit>
+class Fruit{
+public:
+    string name;
+    string city;
+    int price;
+    string country;
+    Fruit(){
+    
+    }
+    Fruit(string n,string c,int p){
+        name=n;
+        city=c;
+        price=p;
+        country="INDIA";
+    }
+    void print(){
+        cout<<"FRUIT:"<<endl;
+        cout<<name<<endl;
+        cout<<country<<endl;
+        cout<<price<<endl;
+        cout<<city<<endl;
+    }
+};
+
+ostream& operator<<(ostream&os,Fruit f){
+    f.print();
+    return os;
+}
+
+int main()
+{
+    map<string,Fruit>hf;
+    
+    Fruit f("Guava","Goa",100);
+    Fruit f2("Mango","MP",200);
+    Fruit f3("Pineapple","Punjab",60);
+    
+    //first way of inserting
+    pair<string,Fruit>p1(f.city,f);
+    hf.insert(p1);
+    
+    //2nd way
+    hf["MP"]=f2;
+    
+    //3rd way
+    // hf.insert(mp(f3.city,f3));
+    
+    hf["Punjab"]=f3;
+    
+    string city="AP";
+    auto it=hf.find(city);              //iterator  it will contain 2 items: key and value
+    if(it!=hf.end()){
+        cout<<it->first<<endl;          //key
+        cout<<it->second<<endl;         //fruit i.e., value
+    }
+    else cout<<"Not found"<<endl;
+    
+    for(auto it=hf.begin();it!=hf.end();it++){
+        cout<<it->second<<endl;
+    }
+    
+    return 0;
+}

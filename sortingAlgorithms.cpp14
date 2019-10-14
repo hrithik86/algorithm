@@ -1,0 +1,126 @@
+//Sorting Algorithms:
+/*
+1. Selection Sort
+2. Bubble Sort
+3. Insertion Sort
+4. Merge Sort
+5. Quick Sort
+*/
+#include <bits/stdc++.h>
+using namespace std;
+
+void selectionSort(int a[],int s,int e){
+    for(int k=0;k<e;k++){
+        int minIndex=k;
+        for(int i=k+1;i<=e;i++){
+            if(a[i]<a[minIndex]){
+                minIndex=i;
+            }
+        }
+        swap(a[minIndex],a[k]);
+    }
+}
+
+void bubbleSort(int a[],int s,int e){
+    for(int k=0;k<e;k++){
+        for(int i=0;i<e-k;i++){
+            if(a[i]>a[i+1])
+                swap(a[i],a[i+1]);
+        }
+    }
+}
+
+void insertionSort(int a[],int s,int e){
+    for(int i=1;i<=e;i++){
+        int val=a[i];
+        int end=i-1;
+        while(a[end]>val && end>=0){
+            a[end+1]=a[end];
+            end-=1;
+        }
+        a[end+1]=val;
+    }
+}
+
+void merge(int a[],int x[],int y[],int s,int e){
+    int i=s;
+    int mid=(s+e)/2;
+    int j=mid+1;
+    int k=s;
+    while(i<=mid && j<=e)
+    {
+        if (x[i]<y[j]){
+            a[k++]=x[i++];
+        }
+        else{
+            a[k++]=y[j++];
+        }
+    }    
+    while(i<=mid)
+    {
+        a[k++]=x[i++];
+    }
+    while(j<=e)
+    {
+        a[k++]=y[j++];
+    }
+    return;
+}
+
+void mergeSort(int a[],int s,int e){
+    //base case
+    if(s>=e){
+        return;
+    }
+    //Rec case
+    //Divide into 2 parts
+    int x[100],y[100],i;
+    int mid=(s+e)/2;
+    for(i=0;i<=mid;i++){
+        x[i]=a[i];
+    }
+    for(i=mid+1;i<=e;i++){
+        y[i]=a[i];
+    }
+    //Sort them recursively
+    mergeSort(x,s,mid);
+    mergeSort(y,mid+1,e);
+    //merge the sorted arrays
+    merge(a,x,y,s,e);
+    return;
+}
+
+int partition(int a[],int s,int e){
+    int pivot=a[e];
+    int pIndex=s;
+    for(int i=s;i<e;i++){
+        if(a[i]<=pivot){
+            swap(a[i],a[pIndex]);
+            pIndex+=1;
+        }
+    }
+    swap(a[pIndex],a[e]);
+    return pIndex;
+}
+
+void quickSort(int a[],int s,int e){
+    if(s>=e) return;
+    int index=partition(a,s,e);
+    quickSort(a,s,index-1);
+    quickSort(a,index+1,e);
+}
+
+int main()
+{
+    int a[]={2,7,4,1,5,3};
+    int n=sizeof(a)/sizeof(a[0]);
+    //selectionSort(a,0,n-1);
+    //bubbleSort(a,0,n-1);
+    //insertionSort(a,0,n-1);
+    //mergeSort(a,0,n-1);
+    quickSort(a,0,n-1);
+    for(int i=0;i<n;i++){
+        cout<<a[i]<<" ";
+    }
+    return 0;
+}

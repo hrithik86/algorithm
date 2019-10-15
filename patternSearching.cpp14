@@ -1,0 +1,98 @@
+/*Pattern Searching
+1.Naive approach
+2.KMP (Knuth Morris Pratt) Pattern Searching
+
+Ex. I/P:adedefgh
+        def
+    O/P:present at index 3
+*/
+#include <bits/stdc++.h>
+using namespace std;
+
+//naive approach    O(m*n) approach
+void findSubstring(string s,string sub){
+    int i=0,j=0,flag=0;
+    int len1=s.size();
+    int len2=sub.size();
+    while(i<len1){
+        int index=i;
+        while(j<len2){
+            if(s[i]==sub[j]){
+                i++;j++;
+            }
+            else{
+                i=index+1;
+                j=0;
+                break;
+            }
+        }
+        if(j==len2){
+            flag=1;
+            break;
+        } 
+    }
+    if(flag==0) cout<<"Not present";
+    else{
+        cout<<"Present and starting from index "<<i-len2;    
+    }
+}
+
+//KMP   O(m+n) approach
+void KMPSearch(string s,string sub){
+    int len1=s.size();
+    int len2=sub.size();
+    int flag=0,j;
+    
+    //=======Construction of array====
+    int lps[len2];
+    int len = 0; 
+    lps[0] = 0;
+    int i = 1; 
+    while (i < len2) { 
+        if (sub[i] == sub[len]) { 
+            len++; 
+            lps[i] = len; 
+            i++; 
+        } 
+        else
+        { 
+            if (len != 0) { 
+                len = lps[len - 1];
+            } 
+            else // if (len == 0) 
+            { 
+                lps[i] = 0; 
+                i++; 
+            } 
+        } 
+    }
+    //===============================
+    
+    i=0;j=0;
+    while(i<len1){
+        if(s[i]==sub[j]){
+            i++;j++;
+        }
+        if(j==len2){
+            flag=1;
+            break;
+        }
+        else if(i<len1 && s[i]!=sub[j]){
+            if(j!=0)
+                j=lps[j-1];
+            else i++;
+        }
+    }
+    if(flag==0) cout<<"Not found";
+    else cout<<"Pattern found at index "<<i-len2;
+}
+
+
+int main()
+{
+    string s,sub;
+    cin>>s>>sub;
+    //findSubstring(s,sub);
+    KMPSearch(s,sub);
+    return 0;
+}

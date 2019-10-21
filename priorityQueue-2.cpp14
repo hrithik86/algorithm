@@ -1,0 +1,51 @@
+//Priority Queue
+//k smallest elements & k largest elements
+
+#include <iostream>
+#include<queue>
+using namespace std;
+
+void kSmallestElements(int arr[],int n,int k){
+    priority_queue<int>pq;          // Max heap
+    for(int i=0;i<k;i++){
+        pq.push(arr[i]);
+    }
+    for(int i=k;i<n;i++){
+        if(arr[i]<pq.top()){
+            pq.pop();
+            pq.push(arr[i]);    
+        }
+    }
+    while(!pq.empty()){
+        cout<<pq.top()<<"\n";
+        pq.pop();
+    }
+}
+
+void klargestElements(int arr[],int n,int k){
+    priority_queue<int,vector<int>,greater<int>>pq;         //Min heap
+    for(int i=0;i<k;i++){
+        pq.push(arr[i]);
+    }
+    for(int i=k;i<n;i++){
+        if(arr[i]>pq.top()){
+            pq.pop();
+            pq.push(arr[i]);    
+        }
+    }
+    while(!pq.empty()){
+        cout<<pq.top()<<"\n";
+        pq.pop();
+    }
+}
+
+int main()
+{
+    int arr[]={2,44,66,7,88,766,5};
+    int n=sizeof(arr)/sizeof(arr[0]);
+    int k=3;
+    kSmallestElements(arr,n,k);
+    cout<<"\n";
+    klargestElements(arr,n,k);
+    return 0;
+}

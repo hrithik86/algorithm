@@ -1,0 +1,83 @@
+#include <iostream>
+#include<map>
+#include<vector>
+#include<list>
+#include<queue>
+using namespace std;
+
+class Graph{
+public:
+    int v;
+    list<int> *l;
+    Graph(int V){
+        v=V; 
+        l=new list<int>[V];
+    }
+    void addEdge(int src,int des,bool bidir=false){
+        l[src].push_back(des);
+        if(bidir){
+            l[des].push_back(src);    
+        }
+    }
+    void print(){
+        for(int i=0;i<v;i++){
+            cout<<i<<" - ";
+            for(auto it=l[i].begin();it!=l[i].end();it++){
+                cout<<*it<<" ,";
+            }
+            cout<<"\n";
+        }
+    }
+    void bfs(int src){
+        queue<int>q;
+        bool visited[v]={false};
+        visited[src]=true;
+        q.push(src);
+        visited[src]=true;
+        while(!q.empty()){
+            int t=q.front();
+            cout<<t<<" ";
+            q.pop();
+            for(auto it=l[t].begin();it!=l[t].end();it++){
+                if(!visited[*it]){
+                    visited[*it]=true;
+                    q.push(*it);
+                }
+            }
+        }
+    }
+    void dfsHelper(int src,bool visited[]){
+        cout<<src<<" ";
+        visited[src]=true;
+        for(auto it=l[src].begin();it!=l[src].end();it++){
+            if(!visited[*it]){
+                dfsHelper(*it,visited);
+            }
+        }
+    }
+    
+    void dfs(){
+        bool visited[v]={false};
+        for(int i=0;i<v;i++){
+            if(!visited[i])
+                dfsHelper(i,visited);       
+        }
+    }
+};
+
+int main()
+{
+    Graph g(4); 
+    g.addEdge(0, 1); 
+    g.addEdge(0, 2); 
+    g.addEdge(1, 2); 
+    g.addEdge(2, 0); 
+    g.addEdge(2, 3); 
+    g.addEdge(3, 3);
+    g.print();
+    cout<<"\n";
+    g.bfs(2);
+    cout<<"\n";
+    g.dfs();
+    return 0;
+}

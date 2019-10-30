@@ -1,0 +1,100 @@
+/*
+DIJKSTRA'S ALGORITHM to find shortest source path to destination   
+(not using set)
+
+I/P:
+4 4
+0 1 3
+0 3 5
+1 2 1
+2 3 8
+
+O/P:
+0 0
+1 3
+2 4
+3 5
+
+*/
+#include <bits/stdc++.h>
+using namespace std;
+
+int getVertex(bool *visited,int *dist,int n){
+    int minVertex=-1;
+    for(int i=0;i<n;i++){
+        if((!visited[i] && (minVertex==-1)) || (dist[i]<dist[minVertex]))
+            minVertex=i;
+    }
+    return minVertex;
+}
+
+void dijkstra(int **edges,int n){
+    int *dist=new int[n];
+    bool *visited=new bool[n];
+    
+    for(int i=0;i<n;i++){
+        visited[i]=false;
+        dist[i]=INT_MAX;
+    }
+    
+    //src dist=0
+    dist[0]=0;
+    
+    for(int i=0;i<n-1;i++){
+        
+        //Get minVertex i.e, unvisited vertex with minimum distance
+        int minVertex=getVertex(visited,dist,n);
+        visited[minVertex]=true;
+        
+        //Explore all the unvisited neighbours of minVertex and update distance array according to that
+        for(int j=0;j<n;j++){
+            if(edges[minVertex][j]!=0 && !visited[j]){
+                if(dist[j]>dist[minVertex]+edges[minVertex][j]){
+                    dist[j]=dist[minVertex]+edges[minVertex][j];
+                }
+            }
+        }
+    }
+    for(int i=0;i<n;i++){
+        cout<<i<<" "<<dist[i]<<endl;
+    }
+
+    delete[] visited;
+    delete[] dist;
+    return;
+}
+
+int main()
+{   
+    int n,e;
+    cin>>n>>e;
+    
+    //Making adjacency matrix for graph
+    //2d array dynamic allocation
+    int **edges=new int*[n];
+    for(int i=0;i<n;i++){
+        edges[i]=new int[n];
+    }
+    
+    for(int i=0;i<n;i++){
+        for(int j=0;j<n;j++){
+            edges[i][j]=0;
+        }
+    }
+    
+    int f,s,wt;
+    for(int i=0;i<e;i++){
+        cin>>f>>s>>wt;
+        edges[f][s]=wt;
+        edges[s][f]=wt;
+    }
+    
+    cout<<endl;
+    dijkstra(edges,n);
+    
+    for(int i=0;i<n;i++){
+        delete [] edges[i];
+    }
+    delete [] edges;
+    return 0;
+}

@@ -1,0 +1,74 @@
+//Connected components using DFS
+/*
+for the given input,
+O/P:
+Component 1 : 0,1,2,3,
+Component 2 : 4,5,
+
+*/
+
+#include <bits/stdc++.h>
+using namespace std;
+
+class Graph{
+public:
+    int v;
+    list<int> *l;
+    Graph(int V){
+        v=V;
+        l=new list<int> [v];
+    }
+    void addEdge(int u,int v){
+        l[u].push_back(v);
+        l[v].push_back(u);
+    }
+    void print(){
+        for(int i=0;i<v;i++){
+            cout<<i<<" -> ";
+            for(auto it=l[i].begin();it!=l[i].end();it++){
+                cout<<*it<<" ";
+            }
+            cout<<"\n";
+        }
+        
+    }
+    void dfsUtil(int src,bool visited[],set<int>& s){
+        s.insert(src);
+        visited[src]=true;
+        for(auto it=l[src].begin();it!=l[src].end();it++){
+            if(!visited[*it]){
+                dfsUtil(*it,visited,s);
+            }
+        }
+    }
+    
+    void dfs(int v){
+        bool visited[v]={false};
+        int c=1;
+        for(int i=0;i<v;i++){
+            if(!visited[i]){
+                set<int>s;
+                dfsUtil(i,visited,s);
+                cout<<"Component "<< c<<" : " ;
+                for(auto j=s.begin();j!=s.end();j++){
+                    cout<<*j<<",";
+                }
+                cout<<"\n";
+                c++;
+            }
+        }
+    }
+};
+
+int main()
+{
+    int v=6;
+    Graph g(v);
+    g.addEdge(0,1);
+    g.addEdge(1,2);
+    g.addEdge(2,3);
+    g.addEdge(3,1);
+    g.addEdge(4,5);
+    g.dfs(v);
+    return 0;
+}

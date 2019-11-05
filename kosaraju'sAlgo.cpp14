@@ -1,0 +1,108 @@
+/* 
+KOSARAJU'S ALGORITHM to find strongly connected components
+I/P:
+10
+12
+1 2
+2 3
+3 4
+4 1
+3 5
+5 6
+6 7
+7 5
+8 6
+8 9
+9 8
+9 10
+
+O/P:
+8 9 
+10 
+1 2 3 4 
+5 6 7
+*/
+
+#include <bits/stdc++.h>
+using namespace std;
+#define ll long long
+
+class Graph{
+public:
+    map<ll,vector<ll>>l;
+    map<ll,vector<ll>>t;
+    stack<int>S;
+    void addEdge(int u,int v){
+        l[u].push_back(v);
+        t[v].push_back(u);
+    }
+    void print(){
+        for(auto it=l.begin();it!=l.end();it++){
+            cout<<it->first<<" -> ";
+            for(int j=0;j<it->second.size();j++){
+                cout<<it->second[j]<<",";
+            }
+            cout<<"\n";
+        }
+    }
+    
+    void TdfsUtil(int src,bool visited[],set<int>& s){
+        s.insert(src);
+        visited[src]=true;
+        for(auto it=t[src].begin();it!=t[src].end();it++){
+            if(!visited[*it]){
+                TdfsUtil(*it,visited,s);
+            }
+        }
+    }
+    
+    void Tdfs(int v){
+        bool visited[v+1]={false};
+        int i;
+        while(!S.empty()){
+            i=S.top();
+            if(!visited[i]){
+                set<int>s;
+                TdfsUtil(i,visited,s);
+                for(auto j=s.begin();j!=s.end();j++){
+                    cout<<*j<<" ";
+                }
+                cout<<"\n";
+            }
+            S.pop();
+        }
+    }
+    
+    void dfsUtil(int src,bool visited[]){
+        visited[src]=true;
+        for(auto it=l[src].begin();it!=l[src].end();it++){
+            if(!visited[*it]){
+                dfsUtil(*it,visited);
+            }
+        }
+        S.push(src);
+    }
+    
+    void dfs(int v){
+        bool visited[v+1]={false};
+        for(int i=1;i<=v;i++){
+            if(!visited[i]){
+                dfsUtil(i,visited);
+            }
+        }
+        Tdfs(v);
+    }
+};
+
+int main()
+{
+    Graph g;
+    int i,v,e,a,b;
+    cin>>v>>e;
+    for(i=0;i<e;i++){
+        cin>>a>>b;
+        g.addEdge(a,b);
+    }
+    g.dfs(v);
+    return 0;
+}

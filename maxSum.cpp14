@@ -1,0 +1,40 @@
+/*
+Maximum sum subsequence with no adjacent elements
+Given an array of positive numbers, find the maximum subsequence sum <= given sum, such that no two elements are adjacent to each other.
+
+I/P:
+6 25
+5 5 10 100 10 5
+
+O/P:
+25
+*/
+
+#include <bits/stdc++.h>
+using namespace std;
+#define ll long long
+
+int ans=INT_MIN;
+void findMaxSum(int i,int *a,int n,int sum,int S){
+    if(sum>S)
+        return;
+    ans=max(ans,sum);
+    if(i>=n){
+        return;
+    }
+    findMaxSum(i+2,a,n,sum+a[i],S);
+    findMaxSum(i+1,a,n,sum,S);
+}
+
+int main()
+{
+    int n,S;
+    cin>>n>>S;
+    int *a=new int[n];
+    for(int i=0;i<n;i++){
+        cin>>a[i];
+    }
+    findMaxSum(0,a,n,0,S);
+    cout<<ans;
+    return 0;
+}

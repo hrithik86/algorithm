@@ -1,0 +1,71 @@
+/*BIPARTITE GRAPHS
+(Assuming : Graph is connected)
+I/P:
+5 5
+0 1
+1 2
+2 3
+3 4
+0 4
+0
+O/P: Not Bicolourable
+*/
+
+#include <bits/stdc++.h>
+using namespace std;
+
+bool bipartite(list<int>*l,int n){
+    if(n==0) return true;
+    vector<int>pending;
+    unordered_set<int> sets[2];         //s1 & s2
+    sets[0].insert(0);
+    pending.push_back(0);
+    while(pending.size()>0){
+        int curr=pending.back();
+        pending.pop_back();
+        int currSet=sets[0].count(curr)>0? 0 : 1;
+        for(auto it=l[curr].begin();it!=l[curr].end();it++){
+            //neighnour not present in either of the sets
+            if(sets[0].count(*it)==0 && sets[1].count(*it)==0 ){
+                sets[1-currSet].insert(*it);    
+                pending.push_back(*it);
+            }
+            //neighbour present in the same set
+            else if(sets[currSet].count(*it)>0){
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
+int main()
+{
+    while(true){
+        int n;
+        cin>>n;
+        if(n==0) break;
+        list<int>*l=new list<int> [n];
+        int q,u,v;
+        cin>>q;
+        for(int i=0;i<q;i++){
+            cin>>u>>v;
+            l[u].push_back(v);
+            l[v].push_back(u);
+        }
+        //Printing the graph
+        // for(int i=0;i<n;i++){
+        //     cout<<i<<" - ";
+        //     for(auto it=l[i].begin();it!=l[i].end();it++){
+        //         cout<<*it<<",";
+        //     }
+        //     cout<<"\n";
+        // }
+        
+        bool ans=bipartite(l,n);
+        if(ans) cout<<"Bicolourable\n";    
+        else cout<<"Not Bicolourable\n";
+    }
+    
+    return 0;
+}

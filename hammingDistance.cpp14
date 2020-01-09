@@ -25,7 +25,7 @@ We now convert the original problem into a bit-counting problem. There are sever
 #include <iostream>
 using namespace std;
 
-//Simple method
+//Simple method [Time Complexity: (-)(logn) (Theta of logn)]
 int countBits1(int res){
     int ans=0;
     while(res){
@@ -37,6 +37,11 @@ int countBits1(int res){
     return ans;
 }
 
+//Directly using inbuilt function to find the set bits
+int countBits2(int res){
+    return __builtin_popcount(res);
+}
+
 int main()
 {
     int a,b;
@@ -44,6 +49,8 @@ int main()
     int res=a xor b;
     
     cout<<countBits1(res);
+    
+    cout<<countBits2(res);
     
     
     return 0;

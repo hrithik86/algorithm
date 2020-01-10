@@ -42,6 +42,16 @@ int countBits2(int res){
     return __builtin_popcount(res);
 }
 
+//Brian Kernighan’s Algorithm [Time Complexity: O(logn)]
+int countBits3(int res){
+    int ans=0;
+    while(res){
+        res=res & (res-1);
+        ans++;
+    }
+    return ans;
+}
+
 int main()
 {
     int a,b;
@@ -52,6 +62,7 @@ int main()
     
     cout<<countBits2(res);
     
+    cout<<countBits3(res);
     
     return 0;
 }

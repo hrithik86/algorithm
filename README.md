@@ -1,1 +1,1 @@
-# Basic programs implementing various concepts of algorithm
+This repository contains basic computer algorithms and some optimization codes for various programming challenges.
